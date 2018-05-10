@@ -1,5 +1,8 @@
 var steam = require("./steam")
 var sql = require("./sql_db.js")
+var gog = require("./gog.js")
+
+const _ = require('lodash');
 
 beforeAll(() => {
     return steam.steam(590380).then((result) => {
@@ -18,6 +21,90 @@ beforeAll(() => {
             "header_image": "https://steamcdn-a.akamaihd.net/steam/apps/590380/header.jpg?t=1519989363",
             "steam_appid": 590380
         }
+
+        mock_gog_obj_1 =
+        {
+            customAttributes: [],
+            developer: "CD PROJEKT RED",
+            publisher: "CD PROJEKT RED",
+            price: {
+                amount: "12.89",
+                baseAmount: "12.89",
+                finalAmount:"12.89",
+                isDiscounted: false,
+                discountPercentage: 0,
+                discountDifference: "0.00",
+                symbol: "C$",
+                isFree: false,
+                discount: 0,
+                isBonusStoreCreditIncluded: false,
+                bonusStoreCreditAmount: "0.00",
+                promoId: null
+            },
+            isDiscounted: false,
+            isInDevelopment: false,
+            id: 1207658924,
+            releaseDate: 1193346000,
+            buyable: true,
+            title: "The Witcher: Enhanced Edition",
+            image: "//images-1.gog.com/37d4a…e31aaaefc74bbcd46ebd190",
+            url: "/game/the_witcher",
+            supportUrl: "/support/the_witcher",
+            forumUrl: "/forum/the_witcher",
+            category: "Role-playing",
+            originalCategory: "Role-playing",
+            rating: 47,
+            type: 1,
+            isComingSoon: false,
+            isPriceVisible: true,
+            isMovie: false,
+            isGame: true,
+            slug: "the_witcher",
+            isWishlistable: true
+        }
+
+        mock_gog_obj_2 =
+        {
+            customAttributes: [],
+            developer: "CD PROJEKT RED",
+            publisher: "CD PROJEKT RED",
+            price: {
+                amount: "12.89",
+                baseAmount: "12.89",
+                finalAmount:"12.89",
+                isDiscounted: false,
+                discountPercentage: 0,
+                discountDifference: "0.00",
+                symbol: "C$",
+                isFree: false,
+                discount: 0,
+                isBonusStoreCreditIncluded: false,
+                bonusStoreCreditAmount: "0.00",
+                promoId: null
+            },
+            isDiscounted: false,
+            isInDevelopment: false,
+            id: 1207658924,
+            releaseDate: 1193346000,
+            buyable: true,
+            title: "The Witcher 2: Enhanced Edition",
+            image: "//images-1.gog.com/37d4a…e31aaaefc74bbcd46ebd190",
+            url: "/game/the_witcher",
+            supportUrl: "/support/the_witcher",
+            forumUrl: "/forum/the_witcher",
+            category: "Role-playing",
+            originalCategory: "Role-playing",
+            rating: 47,
+            type: 1,
+            isComingSoon: false,
+            isPriceVisible: true,
+            isMovie: false,
+            isGame: true,
+            slug: "the_witcher",
+            isWishlistable: true
+        }
+
+        mock_gog_game_list = [mock_gog_obj_1, mock_gog_obj_2]
     })
 })
 
@@ -36,6 +123,10 @@ describe("Steam Tests", () => {
   test("Process steam object - Game Title", () => {
       expect(steam.process_object(mock_steam_obj)[0]).
       toBe("Into the Breach")
+  }),
+  test("Calculte steam app price", () => {
+    expect(steam.calculate_price(10020, 50)).
+    toBe("50.10")
   })
 })
 
@@ -43,5 +134,35 @@ describe('SQL DB Tests', () => {
     test("Fetch Wishlist from MySQL Database", () => {
         expect(db_list[1].appid).
         toBe(376520)
+    })
+})
+
+describe('GOG Tests', () => {
+    test("Receive JSON object from GOG API", () => {
+        return gog.gog_api("Witcher").then((result) => {
+            expect(_.isArray(result)).
+            toBeTruthy()
+        })
+
+    }),
+    test("Return empty list for unmatched name", () => {
+        return gog.gog_api("afdsafdsaf").then((result) => {
+            expect(result).
+            toHaveLength(0)
+        })
+    }),
+    test("Return just the specified game object", () => {
+        expect(gog.isolate_game_obj("The Witcher: Enhanced Edition", mock_gog_game_list).title).
+        toBe("The Witcher: Enhanced Edition")
+
+    }),
+    test("Return undefined for unmatched names", () => {
+        expect(gog.isolate_game_obj("afdsafdsaf", [])).
+        toBe(undefined)
+
+    }),
+    test("Extract data function should return an object", () => {
+        expect(_.isObject(gog.extract_data(mock_gog_obj_1))).
+        toBeTruthy()
     })
 })
