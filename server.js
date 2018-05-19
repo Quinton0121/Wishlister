@@ -269,33 +269,7 @@ app.get('/fetchDetails', (request, response) => {
    return;
  }
 
-    if(request.body['g-recaptcha-response'] === undefined || request.body['g-recaptcha-response'] === '' || request.body['g-recaptcha-response'] === null) {
-       robot = true;
-     }
-
-    var secretKey = config.secretKey;
-    // req.connection.remoteAddress will provide IP address of connected user.
-    var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + request.body['g-recaptcha-response'] + "&remoteip=" + request.connection.remoteAddress;
-    // Hitting GET request to the URL, Google will respond with success or error scenario.
-    request_module(verificationUrl,function(error,response,body) {
-     body = JSON.parse(body);
-      // Success will be true or false depending upon captcha validation.
-    if(body.success !== undefined && !body.success) {
-     robot = true;
-    }
- });
- if (robot){  // if recaptcha validation failed
-   request.session.loggedIn = false;
-   response.render('index.hbs',{
-       year: new Date().getFullYear(),
-       failedAuth: false,
-       responseCode:true,
-       emptyField: empty_field,
-       loggedIn: false,
-       details: 'Game Search'
-   });
-   return;
- }
+    
 
     sql_db_function.fetch_user_detail(input_name).then((result) => {
       if (result.length != 1) {
