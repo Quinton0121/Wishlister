@@ -9,3 +9,4 @@ coverage/lcov-report/index.html
 coverage/lcov.info
 coverage/clover.xml
 .env
+config.js.bak
