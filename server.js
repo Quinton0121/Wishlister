@@ -10,11 +10,17 @@ const serverPort = 8080;
 var math = require('mathjs');
 var request_module = require('request');
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 var path = require('path');
 var hbsMailer = require('nodemailer-express-handlebars')
 var nodemailer = require('nodemailer');
 >>>>>>> d34918c94d78ece1627e93077cb930c969ae33f8
+=======
+var path = require('path');
+var hbsMailer = require('nodemailer-express-handlebars')
+var nodemailer = require('nodemailer');
+>>>>>>> 71d626bb84031c3720793ae541f4400d5a1aa9fc
 
 /**
  * constant for password hash algorithm
@@ -229,14 +235,18 @@ app.get('/fetchDetails', (request, response) => {
 // Authorize users through the login panel on the home page. Passwords are
 // hashed and stored in the MySQL database
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> d34918c94d78ece1627e93077cb930c969ae33f8
+=======
+>>>>>>> 71d626bb84031c3720793ae541f4400d5a1aa9fc
   app.post('/loginAuth', (request, response) => {
     var input_name = request.body.username
     var input_pass = request.body.password
     var resultName = 'numMatch'
     var robot = false; //checking by recapcha
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     // var query = `SELECT * FROM users WHERE username = '${input_name}'`;
@@ -244,6 +254,9 @@ app.get('/fetchDetails', (request, response) => {
     var empty_field = check_for_empty_fields(input_name, input_pass);
 =======
     request.session.sort = 'sale'
+=======
+    request.session.search = 'sale'
+>>>>>>> 71d626bb84031c3720793ae541f4400d5a1aa9fc
 
     var empty_field = server_function.check_for_empty_fields(input_name, input_pass);
 
