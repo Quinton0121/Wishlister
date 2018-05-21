@@ -262,12 +262,9 @@ app.get('/fetchDetails', (request, response) => {
     }
 });
 
-<<<<<<< HEAD
-// Authorize users through the login panel on the home page. Passwords are
-// hashed and stored in the MySQL database
 
-  app.post('/loginAuth', (request, response) => {
-=======
+
+
 /**
  * Authorize users through the login panel on the home page. Passwords are
  * hashed and stored in teh MySQL database
@@ -275,7 +272,6 @@ app.get('/fetchDetails', (request, response) => {
  * @route {POST} /loginAuth
  */
 app.post('/loginAuth', (request, response) => {
->>>>>>> d236f9304a3a9bea3f2523af4cc0ad0d34f9aaf1
     var input_name = request.body.username
     var input_pass = request.body.password
     var resultName = 'numMatch'
@@ -285,23 +281,16 @@ app.post('/loginAuth', (request, response) => {
     // var query = `SELECT * FROM users WHERE username = '${input_name}'`;
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     request.session.sort = 'sale'
-=======
-    if(request.body.sort_value == undefined) {
-      request.session.sort = 'name'
-=======
+
     if(request.body.sort_value==undefined){
         if(request.session.sort==undefined){
             request.session.sort = "name"
         }
->>>>>>> 53e71529e88360a59ae2f4cdfa07d5f3ea9c3375
     }else {
         request.session.sort = request.body.sort_value
     }
->>>>>>> d236f9304a3a9bea3f2523af4cc0ad0d34f9aaf1
-
     var empty_field = server_function.check_for_empty_fields(input_name, input_pass);
 
     if(request.body['g-recaptcha-response'] === undefined || request.body['g-recaptcha-response'] === '' || request.body['g-recaptcha-response'] === null) {
@@ -332,11 +321,7 @@ app.post('/loginAuth', (request, response) => {
    return;
  }
 
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> d236f9304a3a9bea3f2523af4cc0ad0d34f9aaf1
 
     sql_db_function.fetch_user_detail(input_name).then((result) => {
       if (result.length != 1) {
